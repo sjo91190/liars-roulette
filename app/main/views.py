@@ -43,5 +43,11 @@ def assign():
 
 @main.route("/liar", methods=['GET', 'POST'])
 def play():
-    print('play')
-    return render_template("play.html", liars=config.get('liars'))
+
+    if request.method == "GET":
+        return render_template("play.html", liars=config.get('liars'))
+
+    print(request.form['person'])
+    config['liars'][request.form['person']].roll()
+
+    return redirect(url_for("main.play"))

@@ -1,52 +1,54 @@
 {% extends "base.html" %}
 
-{#<div class="row">#}
-{#  <div class="col-sm-6">#}
-{#    <div class="card">#}
-{#      <div class="card-body">#}
-{#        <h5 class="card-title">Special title treatment</h5>#}
-{#        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>#}
-{#        <a href="#" class="btn btn-primary">Go somewhere</a>#}
-{#      </div>#}
-{#    </div>#}
-{#  </div>#}
-{#  <div class="col-sm-6">#}
-{#    <div class="card">#}
-{#      <div class="card-body">#}
-{#        <h5 class="card-title">Special title treatment</h5>#}
-{#        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>#}
-{#        <a href="#" class="btn btn-primary">Go somewhere</a>#}
-{#      </div>#}
-{#    </div>#}
-{#  </div>#}
-{#</div>#}
-
 {% block content %}
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-<div class="card-columns">
-    {% for item, value in liars.items() %}
-        <div class="card text-center bg-transparent">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">{{ value.name }}</h5>
-                <p class="card-text">{{ value.show_slots() }}</p>
-                {% if value.alive %}
-                    <form method="post">
-                        <button class="btn btn-primary" name="person" value="{{ item }}">Take a Shot</button>
-                    </form>
-                {% else %}
-                    <button class="btn btn-secondary">You are Dead :(</button>
-                {% endif %}
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for item, value in liars.items() %}
+        <div class="col">
+            <div class="card text-center">
+                <img src="..." class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{ value.name }}</h5>
+                    <p class="card-text">{{ value.show_slots() }}</p>
+                    {% if value.alive %}
+                        <form method="post">
+                            <button class="btn btn-primary" name="person" value="{{ item }}">Take a Shot</button>
+                        </form>
+                    {% else %}
+                        <button class="btn btn-secondary">You are Dead :(</button>
+                    {% endif %}
+                </div>
             </div>
         </div>
     {% endfor %}
-</div>
+    </div>
 {% endblock content %}
+
+{#{% block content %}#}
+{#    <br>#}
+{#    <br>#}
+{#    <br>#}
+{#    <br>#}
+{#    <br>#}
+{#    <br>#}
+{#<div class="card-columns">#}
+{#    {% for item, value in liars.items() %}#}
+{#        <div class="card text-center">#}
+{#            <img src="..." class="card-img-top" alt="...">#}
+{#            <div class="card-body" style="opacity:10">#}
+{#                <h5 class="card-title">{{ value.name }}</h5>#}
+{#                <p class="card-text">{{ value.show_slots() }}</p>#}
+{#                {% if value.alive %}#}
+{#                    <form method="post">#}
+{#                        <button class="btn btn-primary" name="person" value="{{ item }}">Take a Shot</button>#}
+{#                    </form>#}
+{#                {% else %}#}
+{#                    <button class="btn btn-secondary">You are Dead :(</button>#}
+{#                {% endif %}#}
+{#            </div>#}
+{#        </div>#}
+{#    {% endfor %}#}
+{#</div>#}
+{#{% endblock content %}#}
 
 {#{% block content %}#}
 {#<div class="row">#}

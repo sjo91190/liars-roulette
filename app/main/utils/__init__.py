@@ -34,9 +34,9 @@ def create(player_list):
     return dict(zip(player_list, player_obj))
 
 
-def img_builder(dir):
-    img_list =[]
-    for file in os.listdir(dir):
+def img_builder(directory):
+    img_list = []
+    for file in os.listdir(directory):
         img_list.append(file)
 
     return img_list

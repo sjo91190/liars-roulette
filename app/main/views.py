@@ -1,8 +1,8 @@
 """
 Views and routes for roulette
 """
-from os import path
 import random
+from os import path
 from flask import request, render_template, redirect, url_for
 from app.main import main
 from app.main.forms import PlayerNameForm, PlayerCountForm
@@ -52,7 +52,6 @@ def assign():
 
         config['liars'] = create(player_list=config['names'])
         config['profile'] = dict(zip(config['names'], random.sample(images, number)))
-        print(config['profile'])
         return redirect(url_for("main.play"))
 
 

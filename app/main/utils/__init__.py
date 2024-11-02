@@ -17,7 +17,7 @@ class Player:
             self.slots += 1
             del self.load[1]
         else:
-            self.state = False
+            self.alive = False
 
         return result
 

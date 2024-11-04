@@ -1,12 +1,17 @@
 """
 Views and routes for roulette
 """
+import random
+from os import path
 from flask import request, render_template, redirect, url_for
 from app.main import main
 from app.main.forms import PlayerNameForm, PlayerCountForm
-from app.main.utils import create
+from app.main.utils import create, img_builder
 
 config = dict()
+
+img_root = path.split(__file__)[0][:-4] + "static/img"
+images = img_builder(img_root)
 
 
 @main.route("/", methods=['GET', 'POST'])
@@ -46,6 +51,7 @@ def assign():
             config['names'].append(form.data.get(f"player{i}"))
 
         config['liars'] = create(player_list=config['names'])
+        config['profile'] = dict(zip(config['names'], random.sample(images, number)))
         return redirect(url_for("main.play"))
 
 
@@ -57,7 +63,7 @@ def play():
     """
 
     if request.method == "GET":
-        return render_template("play.html", liars=config.get('liars'))
+        return render_template("play.html", liars=config.get('liars'), pfp=config.get('profile'))
 
     config['liars'][request.form['person']].roll()
     return redirect(url_for("main.play"))

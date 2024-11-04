@@ -3,12 +3,10 @@ Views and routes for roulette
 """
 import random
 from os import path
-from flask import request, render_template, redirect, url_for
+from flask import request, render_template, redirect, url_for, session
 from app.main import main
 from app.main.forms import PlayerNameForm, PlayerCountForm
-from app.main.utils import create, img_builder
-
-config = dict()
+from app.main.utils import img_builder, Player
 
 img_root = path.split(__file__)[0][:-4] + "static/img"
 images = img_builder(img_root)
@@ -26,7 +24,7 @@ def index():
     if request.method == "GET":
         return render_template("index.html", form=form)
 
-    config['count'] = int(form.number.data)
+    session['count'] = int(form.number.data)
     return redirect(url_for("main.assign"))
 
 
@@ -36,8 +34,7 @@ def assign():
     Player names created and Player objects created
     :return: assign template of GET, play if POST
     """
-    config['names'] = []
-    number = config["count"]
+    number = session.get('count')
     players = {f"player{i}": f"Player {i + 1}" for i in range(number)}
 
     PlayerNameForm.append_class(players)
@@ -47,11 +44,11 @@ def assign():
         return render_template("assign.html", players=players, form=form)
 
     if request.method == "POST":
-        for i in range(number):
-            config['names'].append(form.data.get(f"player{i}"))
 
-        config['liars'] = create(player_list=config['names'])
-        config['profile'] = dict(zip(config['names'], random.sample(images, number)))
+        session['names'] = [form.data.get(f"player{i}") for i in range(number)]
+        session['players'] = {name: Player(name).to_dict() for name in session['names']}
+        session['profile'] = dict(zip(session.get('names'), random.sample(images, number)))
+
         return redirect(url_for("main.play"))
 
 
@@ -62,8 +59,15 @@ def play():
     :return: returns play for GET and POST
     """
 
-    if request.method == "GET":
-        return render_template("play.html", liars=config.get('liars'), pfp=config.get('profile'))
+    player_data = session['players']
+    players = {name: Player.from_dict(data) for name, data in player_data.items()}
 
-    config['liars'][request.form['person']].roll()
+    if request.method == "GET":
+        return render_template("play.html", liars=player_data, pfp=session.get('profile'))
+
+    person = request.form.get('person')
+    players[person].roll()
+
+    session['players'] = {name: data.to_dict() for name, data in players.items()}
+
     return redirect(url_for("main.play"))

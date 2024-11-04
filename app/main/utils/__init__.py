@@ -3,14 +3,17 @@ import random
 
 
 class Player:
-    def __init__(self, name):
+    def __init__(self, name, alive=True, slots=0, load=None):
         self.name = name
-        self.alive = True
-        self.slots = 0
-        self.load = [True] + [False for i in range(5)]
+        self.alive = alive
+        self.slots = slots
+        self.load = load if load is not None else [True] + [False for _ in range(5)]
 
     def show_name(self):
         return self.name
+
+    def show_slots(self):
+        return f"{self.slots}/6"
 
     def roll(self):
         result = random.choice(self.load)
@@ -22,16 +25,20 @@ class Player:
 
         return result
 
-    def show_slots(self):
-        return f"{self.slots}/6"
+    def to_dict(self):
+        dict_data = {
+            'name': self.name,
+            'alive': self.alive,
+            'slots': self.slots,
+            'load': self.load
+        }
 
+        return dict_data
 
-def create(player_list):
-    player_obj = []
-    for item in player_list:
-        player_obj.append(Player(name=item))
-
-    return dict(zip(player_list, player_obj))
+    @classmethod
+    def from_dict(cls, data):
+        reload_data = cls(name=data['name'], alive=data['alive'], slots=data['slots'], load=data['load'])
+        return reload_data
 
 
 def img_builder(directory):

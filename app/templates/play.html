@@ -8,7 +8,7 @@
                 <img src="{{ url_for('static', filename='img/') }}{{ pfp.get(item) }}" width=250 height=250 class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">{{ value.name }}</h5>
-                    <p class="card-text">{{ value.show_slots() }}</p>
+                    <p class="card-text">{{ value.slots }}</p>
                     {% if value.alive %}
                         <form method="post">
                             <button class="btn btn-primary" name="person" value="{{ item }}">Pull the Trigger</button>

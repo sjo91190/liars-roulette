@@ -11,7 +11,7 @@ class Config:
 
 class ProductionConfig(Config):
     HOST = os.environ.get("HOST") or "0.0.0.0"
-    PORT = os.environ.get("PORT") or 80
+    PORT = os.environ.get("PORT") or 5000
 
 
 class DevelopmentConfig(Config):

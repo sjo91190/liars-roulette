@@ -12,3 +12,6 @@ if os.environ.get("LIARS_CONFIG") == "prod":
 
 else:
     app = app_factory(config_name="develop")
+    host = os.environ.get("HOST") or "localhost"
+    port = os.environ.get("PORT") or 5000
+    serve(TransLogger(app), host=host, port=port)
